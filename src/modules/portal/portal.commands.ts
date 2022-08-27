@@ -30,6 +30,6 @@ export class PortalCommands {
     const filmId = this.portalService.getFilmId(ctx);
     const repertuar = await this.portalService.repertuar(filmId);
 
-    await ctx.reply(this.portalService.generateRepertuarMessage(repertuar));
+    await ctx.reply(this.portalService.generateRepertuarMessage(repertuar, filmId));
   }
 }

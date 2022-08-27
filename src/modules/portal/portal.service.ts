@@ -8,6 +8,7 @@ import { FilmDto } from '../../dtos/film.dto';
 @Injectable()
 export class PortalService {
   today: string;
+  todaysFilms: FilmDto[];
 
   constructor(private readonly httpService: HttpService) {
     const now = new Date();
@@ -27,8 +28,9 @@ export class PortalService {
     const data = await this.httpService.axiosRef.get<{ code: number; rez: FilmDto[] }>(
       `/get-films?date=${this.today}`,
     );
+    this.todaysFilms = data.data.rez;
 
-    return data.data.rez;
+    return this.todaysFilms;
   };
 
   generateFilmButtons = (films: FilmDto[]): { text: string; callback_data: string }[][] => {
@@ -53,10 +55,12 @@ export class PortalService {
     return data.data.cinema_sessions;
   };
 
-  generateRepertuarMessage = (repertuar: CinemaSessionDto[]): string => {
+  generateRepertuarMessage = (repertuar: CinemaSessionDto[], filmId: string): string => {
+    const selectedFilm = this.todaysFilms?.filter((film) => film.Id === filmId)[0].FilmName || '';
+
     return repertuar.length === 0
-      ? 'Немає сеансів'
-      : `Сеанси:\n${repertuar
+      ? `${selectedFilm}\nНемає сеансів`
+      : `${selectedFilm}\nСеанси:\n${repertuar
           .map(
             (cinemaSession) =>
               `Зал - ${cinemaSession.NameZala}, Початок - ${cinemaSession.start_time}`,
