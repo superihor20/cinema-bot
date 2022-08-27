@@ -54,15 +54,13 @@ export class PortalService {
   };
 
   generateRepertuarMessage = (repertuar: CinemaSessionDto[]): string => {
-    return `Сеанси:\n${
-      repertuar.length === 0
-        ? 'Немає сеансів'
-        : repertuar
-            .map(
-              (cinemaSession) =>
-                `Зал - ${cinemaSession.NameZala}, Початок - ${cinemaSession.start_time}`,
-            )
-            .join('\n')
-    }`;
+    return repertuar.length === 0
+      ? 'Немає сеансів'
+      : `Сеанси:\n${repertuar
+          .map(
+            (cinemaSession) =>
+              `Зал - ${cinemaSession.NameZala}, Початок - ${cinemaSession.start_time}`,
+          )
+          .join('\n')}`;
   };
 }
