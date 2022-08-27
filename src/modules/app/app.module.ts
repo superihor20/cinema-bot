@@ -11,7 +11,6 @@ import { PortalModule } from '../portal/portal.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
-        include: [PortalModule],
       }),
       inject: [ConfigService],
     }),
